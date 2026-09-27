@@ -1,0 +1,49 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if request is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if the caller owns the user document path
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Match all documents under the user's namespace
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      // User's custom and tracked exercises
+      match /exercises/{exerciseId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // User's training splits
+      match /splits/{splitId} {
+        allow read, write: if isOwner(userId);
+
+        // Days within a split
+        match /days/{dayId} {
+          allow read, write: if isOwner(userId);
+        }
+      }
+
+      // User's logged workout sessions
+      match /sessions/{sessionId} {
+        allow read, write: if isOwner(userId);
+
+        // Sets recorded inside a workout session
+        match /sets/{setId} {
+          allow read, write: if isOwner(userId);
+        }
+      }
+    }
+
+    // Allow connection test check on test collection
+    match /test/{docId} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

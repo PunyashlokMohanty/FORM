@@ -1,0 +1,120 @@
+{
+  "entities": {
+    "userProfile": {
+      "title": "UserProfile",
+      "description": "User profile with preference settings and training streak metadata",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "weightUnit": { "type": "string", "enum": ["lbs", "kg"] },
+        "soundEnabled": { "type": "boolean" },
+        "vibrationEnabled": { "type": "boolean" },
+        "defaultRestDuration": { "type": "number" },
+        "activeSplitId": { "type": "string" },
+        "streak": { "type": "number" },
+        "lastWorkoutDate": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["email", "weightUnit"]
+    },
+    "split": {
+      "title": "Split",
+      "description": "A workout split or training routine program",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "splitDay": {
+      "title": "SplitDay",
+      "description": "A scheduled training day within a split",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "order": { "type": "number" }
+      },
+      "required": ["name", "order"]
+    },
+    "exercise": {
+      "title": "Exercise",
+      "description": "Exercise definition with cached personal records",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "category": { "type": "string", "enum": ["barbell", "dumbbell", "machine", "bodyweight", "cable", "cardio"] },
+        "isCustom": { "type": "boolean" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["name", "category"]
+    },
+    "workoutSession": {
+      "title": "WorkoutSession",
+      "description": "Completed or in-progress logged workout session",
+      "type": "object",
+      "properties": {
+        "splitId": { "type": "string" },
+        "splitName": { "type": "string" },
+        "dayId": { "type": "string" },
+        "dayName": { "type": "string" },
+        "startedAt": { "type": "string" },
+        "completedAt": { "type": "string" },
+        "durationSeconds": { "type": "number" },
+        "totalVolume": { "type": "number" },
+        "totalSets": { "type": "number" },
+        "isCompleted": { "type": "boolean" }
+      },
+      "required": ["dayName", "startedAt"]
+    },
+    "workoutSet": {
+      "title": "WorkoutSet",
+      "description": "Logged set in a workout session",
+      "type": "object",
+      "properties": {
+        "exerciseId": { "type": "string" },
+        "exerciseName": { "type": "string" },
+        "order": { "type": "number" },
+        "weight": { "type": "number" },
+        "reps": { "type": "number" },
+        "rpe": { "type": "number" },
+        "isWarmup": { "type": "boolean" },
+        "isPR": { "type": "boolean" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["exerciseId", "order", "weight", "reps"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "userProfile",
+      "description": "User profile document"
+    },
+    "/users/{userId}/splits/{splitId}": {
+      "schema": "split",
+      "description": "User split routines"
+    },
+    "/users/{userId}/splits/{splitId}/days/{dayId}": {
+      "schema": "splitDay",
+      "description": "Days belonging to a specific split"
+    },
+    "/users/{userId}/exercises/{exerciseId}": {
+      "schema": "exercise",
+      "description": "User custom and cached exercises with personal bests"
+    },
+    "/users/{userId}/sessions/{sessionId}": {
+      "schema": "workoutSession",
+      "description": "Past and active workout sessions"
+    },
+    "/users/{userId}/sessions/{sessionId}/sets/{setId}": {
+      "schema": "workoutSet",
+      "description": "Individual sets logged in a workout session"
+    }
+  }
+}

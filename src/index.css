@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-bg-light: #fafafa;
+    --color-surface-light: #ffffff;
+    --color-border-light: #e5e5e5;
+    --color-text-light: #0a0a0a;
+    --color-muted-light: #737373;
+
+    --color-bg-dark: #0a0a0a;
+    --color-surface-dark: #121212;
+    --color-border-dark: #262626;
+    --color-text-dark: #fafafa;
+    --color-muted-dark: #a3a3a3;
+
+    --color-pr-accent: #e8321c;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    touch-action: manipulation;
+  }
+
+  .font-numeric {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-feature-settings: "tnum" 1, "zero" 1;
+  }
+}
+
+/* Custom scrollbar for clean minimal look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 150, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 150, 150, 0.4);
+}
+
+/* Safe area padding for mobile bottom bar */
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+}
